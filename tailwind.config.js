@@ -30,7 +30,7 @@ module.exports = {
             },
             boxShadow: {
                 // Add custom shadow configs
-                custom: "inset 6px 0px var(--shadow-color), 2px 2px 10px var(--shadow-color-alpha), 0px 6px 10px var(--shadow-color-alpha)",
+                // container: ``,
             },
         },
     },

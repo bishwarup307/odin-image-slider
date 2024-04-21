@@ -10,4 +10,35 @@ button {
     @apply cursor-pointer;
 }
 
+@layer components {
+    @media (min-width: 1440px) {
+        /* Adjust this value based on your Tailwind config if necessary */
+        .my-shadow::before {
+            position: absolute;
+            z-index: 1000;
+            content: "";
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            box-shadow: inset 30px 0px 10px rgba(255, 255, 255, 0.4),
+                inset 40px 0px 10px rgba(255, 255, 255, 0.3),
+                inset 50px 0px 10px rgba(255, 255, 255, 0.3),
+                inset 60px 0px 10px rgba(255, 255, 255, 0.2),
+                inset 70px 0px 10px rgba(255, 255, 255, 0.2),
+                inset 90px 0px 10px rgba(255, 255, 255, 0.1),
+                inset 120px 0px 10px rgba(255, 255, 255, 0.1),
+                inset 160px 0px 10px rgba(255, 255, 255, 0.05),
+                inset -30px 0px 10px rgba(255, 255, 255, 0.4),
+                inset -40px 0px 10px rgba(255, 255, 255, 0.3),
+                inset -50px 0px 10px rgba(255, 255, 255, 0.3),
+                inset -60px 0px 10px rgba(255, 255, 255, 0.2),
+                inset -70px 0px 10px rgba(255, 255, 255, 0.2),
+                inset -90px 0px 10px rgba(255, 255, 255, 0.1),
+                inset -120px 0px 10px rgba(255, 255, 255, 0.1),
+                inset -160px 0px 10px rgba(255, 255, 255, 0.05);
+        }
+    }
+}
+
 /* Put your custom CSS selectors here */
