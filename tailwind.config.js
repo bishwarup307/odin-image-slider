@@ -32,6 +32,12 @@ module.exports = {
                 // Add custom shadow configs
                 // container: ``,
             },
+            transitionTimingFunction: {
+                "in-expo": "cubic-bezier(0.18, 0.5, 0, 0.99)",
+            },
+            aspectRatio: {
+                "4/3": "4 / 3",
+            },
         },
     },
     // Add your custom plugins

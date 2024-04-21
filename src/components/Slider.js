@@ -7,41 +7,101 @@ const IMAGE_URLS = [
 ];
 
 let center = 2;
+let inFocus;
+
+const getAdjacentImage = function getNext(index, direction) {
+    const img = document.createElement("img");
+    img.src = IMAGE_URLS[index];
+    img.className =
+        "absolute w-full h-full rounded-xl transition-transform ease-in-expo duration-1000";
+    if (direction === "next") img.classList.add("translate-x-full");
+    else if (direction === "previous") img.classList.add("-translate-x-full");
+    return img;
+};
 
 export default function Slider() {
     const parentContainer = document.createElement("div");
 
     const container = document.createElement("div");
     container.className =
-        "container py-5 text-white mx-auto flex justify-center items-center gap-8 overflow-hidden relative my-shadow";
+        "container relative py-5 text-white mx-auto flex justify-center items-center gap-8 overflow-hidden";
 
     const leftDiv = document.createElement("div");
     leftDiv.className =
-        "left-div absolute max-w-lg max-h-[300px] -translate-x-full translate-y-1/2 -top-28 overflow-hidden rounded-xl";
-    const leftImg = document.createElement("img");
-    leftImg.className = "rounded-xl";
-    leftImg.src = IMAGE_URLS[1];
-    leftImg.alt = "landscape";
-    leftDiv.appendChild(leftImg);
+        "absolute aspect-4/3 w-[50%] bg-amber-400 -translate-x-[120%] rounded-2xl";
     container.appendChild(leftDiv);
 
     const focusDiv = document.createElement("div");
     focusDiv.className =
-        "max-w-lg border-l-8 border-r-8 border-transparent rounded-lg overflow-hidden";
-    const img = document.createElement("img");
-    img.className = "rounded-xl transition-transform duration-500";
-    img.src = IMAGE_URLS[2];
-    focusDiv.append(img);
+        "relative aspect-4/3 w-[65%] rounded-2xl overflow-hidden";
+    const focusImgM = document.createElement("img");
+    focusImgM.src = IMAGE_URLS[2];
+    focusImgM.className =
+        "absolute w-full h-full rounded-xl transition-transform ease-in-expo duration-1000";
+    focusDiv.appendChild(focusImgM);
+
+    const leftButton = document.createElement("button");
+    leftButton.innerHTML = `<svg viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>left</title> <path d="M7.094 15.938l7.688 7.688-3.719 3.563-11.063-11.063 11.313-11.344 3.531 3.5z"></path> </g></svg>`;
+    leftButton.className =
+        "absolute z-50 top-1/2 left-4 px-2 py-2 bg-white bg-opacity-50 fill-slate-600 w-14 h-14 -translate-y-1/2 rounded-full hover:bg-slate-700 hover:fill-slate-50";
+    focusDiv.appendChild(leftButton);
+
+    const rightButton = document.createElement("button");
+    rightButton.innerHTML = `<svg viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>right</title> <path d="M7.75 16.063l-7.688-7.688 3.719-3.594 11.063 11.094-11.344 11.313-3.5-3.469z"></path> </g></svg>`;
+    rightButton.className =
+        "absolute z-50 top-1/2 right-4 px-2 py-2 bg-white bg-opacity-50 fill-slate-600 w-14 h-14 -translate-y-1/2 rounded-full hover:bg-slate-700 hover:fill-slate-50";
+    focusDiv.appendChild(rightButton);
+
     container.appendChild(focusDiv);
 
     const rightDiv = document.createElement("div");
     rightDiv.className =
-        "absolute max-w-lg max-h-[300px] translate-x-full translate-y-1/2 -top-28 overflow-hidden rounded-xl";
-    const rightImg = document.createElement("img");
-    rightImg.className = "rounded-xl";
-    rightImg.src = IMAGE_URLS[3];
-    rightDiv.appendChild(rightImg);
+        "absolute aspect-4/3 w-[50%] bg-amber-400 translate-x-[120%] rounded-2xl";
     container.appendChild(rightDiv);
+
+    leftButton.addEventListener("click", () => {
+        [...focusDiv.children].forEach((child) => {
+            if (child.classList.contains("del")) focusDiv.removeChild(child);
+        });
+
+        center += 1;
+        center %= 5;
+
+        const nextImage = getAdjacentImage(center, "next");
+        focusDiv.appendChild(nextImage);
+
+        if (!inFocus) inFocus = focusImgM;
+        inFocus.classList.add("del");
+
+        inFocus.style.transform = "translateX(-100%)";
+        setTimeout(() => {
+            nextImage.style.transform = "translateX(0%)";
+        }, 50);
+
+        inFocus = nextImage;
+    });
+
+    rightButton.addEventListener("click", () => {
+        [...focusDiv.children].forEach((child) => {
+            if (child.classList.contains("del")) focusDiv.removeChild(child);
+        });
+
+        center -= 1;
+        if (center < 0) center = 4;
+
+        const prevImage = getAdjacentImage(center, "previous");
+        focusDiv.appendChild(prevImage);
+
+        if (!inFocus) inFocus = focusImgM;
+        inFocus.classList.add("del");
+
+        inFocus.style.transform = "translateX(100%)";
+        setTimeout(() => {
+            prevImage.style.transform = "translateX(0%)";
+        }, 50);
+
+        inFocus = prevImage;
+    });
 
     parentContainer.appendChild(container);
 
@@ -50,27 +110,6 @@ export default function Slider() {
         "mt-6 ml-12 px-4 py-1 font-medium border-none rounded-md bg-slate-700 text-white text-lg";
     btnAnimate.textContent = "Slide";
     parentContainer.appendChild(btnAnimate);
-
-    btnAnimate.addEventListener("click", () => {
-        center += 1;
-        let left = center - 1;
-        let right = center + 1;
-        center %= 5;
-        left %= 5;
-        right %= 5;
-
-        // console.log(left, center, right);
-
-        // leftImg.src = IMAGE_URLS[left];
-        // img.src = IMAGE_URLS[center];
-        // rightImg.src = IMAGE_URLS[right];
-
-        img.style.transform = "translateX(100%)";
-        setTimeout(() => {
-            img.src = IMAGE_URLS[center];
-            img.style.transform = "translateX(-100%)";
-        }, 500);
-    });
 
     return parentContainer;
 }
