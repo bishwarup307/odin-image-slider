@@ -19,20 +19,10 @@ button {
     right: 0;
     height: 100%;
     width: 100%;
-    box-shadow: inset 30px 0px 10px rgba(255, 255, 255, 0.4),
-        inset 40px 0px 10px rgba(255, 255, 255, 0.3),
-        inset 50px 0px 10px rgba(255, 255, 255, 0.3),
-        inset 60px 0px 10px rgba(255, 255, 255, 0.2),
-        inset 70px 0px 10px rgba(255, 255, 255, 0.2),
-        inset 90px 0px 10px rgba(255, 255, 255, 0.1),
-        inset 120px 0px 10px rgba(255, 255, 255, 0.1),
-        inset 160px 0px 10px rgba(255, 255, 255, 0.05),
-        inset -30px 0px 10px rgba(255, 255, 255, 0.4),
-        inset -40px 0px 10px rgba(255, 255, 255, 0.3),
-        inset -50px 0px 10px rgba(255, 255, 255, 0.3),
-        inset -60px 0px 10px rgba(255, 255, 255, 0.2),
-        inset -70px 0px 10px rgba(255, 255, 255, 0.2),
-        inset -90px 0px 10px rgba(255, 255, 255, 0.1),
-        inset -120px 0px 10px rgba(255, 255, 255, 0.1),
-        inset -160px 0px 10px rgba(255, 255, 255, 0.05);
+    background: linear-gradient(
+            to left,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.1) 10%
+        ),
+        linear-gradient(to right, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.1) 10%);
 }
