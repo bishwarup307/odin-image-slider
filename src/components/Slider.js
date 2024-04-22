@@ -102,125 +102,71 @@ export default function Slider() {
         });
     };
 
-    // const getInitialTranslation = (direction) => {
-    //     const initialTranslation = direction === "next" ? "-100%" : "100%";
-    //     return `translateX(${initialTranslation})`;
-    // };
+    const getInitialTranslation = (direction) => {
+        const initialTranslation = direction === "next" ? "-100%" : "100%";
+        return `translateX(${initialTranslation})`;
+    };
 
-    // const animateCenter = function animateCenterImage(direction) {
-    //     center = getCenterIndex(center, direction);
-    //     const nextImage = getAdjacentImage(center, direction);
-    //     focusDiv.appendChild(nextImage);
-
-    //     if (!inFocus) inFocus = focusImgM;
-    //     inFocus.classList.add("del");
-
-    //     inFocus.style.transform = getInitialTranslation(direction);
-    //     setTimeout(() => {
-    //         nextImage.style.transform = "translateX(0%)";
-    //     }, 50);
-
-    //     inFocus = nextImage;
-    // };
-
-    // const animateLeft = function animateLeftImage(direction) {
-    //     left = getCenterIndex(left, direction);
-    //     const nextImageL = getAdjacentImage(left, direction);
-    //     leftDiv.appendChild(nextImageL);
-
-    //     if (!inFocusLeft) inFocusLeft = focusImgL;
-    //     inFocusLeft.classList.add("del");
-
-    //     inFocusLeft.style.transform = getInitialTranslation(direction);
-    //     setTimeout(() => {
-    //         nextImageL.style.transform = "translateX(0%)";
-    //     }, 50);
-
-    //     inFocusLeft = nextImageL;
-    // };
-
-    // const animateRight = function animateRightImage(direction) {
-    //     right = getCenterIndex(right, direction);
-    //     const nextImageR = getAdjacentImage(right, direction);
-    //     rightDiv.appendChild(nextImageR);
-
-    //     if (!inFocusRight) inFocusRight = focusImgR;
-    //     inFocusRight.classList.add("del");
-
-    //     inFocusRight.style.transform = getInitialTranslation(direction);
-    //     setTimeout(() => {
-    //         nextImageR.style.transform = "translateX(0%)";
-    //     }, 50);
-
-    //     inFocusRight = nextImageR;
-    // };
-
-    rightButton.addEventListener("click", () => {
-        removePastSlides();
-
-        center = getCenterIndex(center, "next");
-        left = getCenterIndex(left, "next");
-        right = getCenterIndex(right, "next");
-
-        const nextImage = getAdjacentImage(center, "next");
+    const animateCenter = function animateCenterImage(direction) {
+        center = getCenterIndex(center, direction);
+        const nextImage = getAdjacentImage(center, direction);
         focusDiv.appendChild(nextImage);
-
-        const nextImageL = getAdjacentImage(left, "next");
-        leftDiv.appendChild(nextImageL);
-
-        const nextImageR = getAdjacentImage(right, "next");
-        rightDiv.appendChild(nextImageR);
 
         if (!inFocus) inFocus = focusImgM;
         inFocus.classList.add("del");
 
-        inFocus.style.transform = "translateX(-100%)";
+        inFocus.style.transform = getInitialTranslation(direction);
         setTimeout(() => {
             nextImage.style.transform = "translateX(0%)";
         }, 50);
 
         inFocus = nextImage;
+    };
+
+    const animateLeft = function animateLeftImage(direction) {
+        left = getCenterIndex(left, direction);
+        const nextImageL = getAdjacentImage(left, direction);
+        leftDiv.appendChild(nextImageL);
 
         if (!inFocusLeft) inFocusLeft = focusImgL;
         inFocusLeft.classList.add("del");
 
-        inFocusLeft.style.transform = "translateX(-100%)";
+        inFocusLeft.style.transform = getInitialTranslation(direction);
         setTimeout(() => {
             nextImageL.style.transform = "translateX(0%)";
         }, 50);
 
         inFocusLeft = nextImageL;
+    };
+
+    const animateRight = function animateRightImage(direction) {
+        right = getCenterIndex(right, direction);
+        const nextImageR = getAdjacentImage(right, direction);
+        rightDiv.appendChild(nextImageR);
 
         if (!inFocusRight) inFocusRight = focusImgR;
         inFocusRight.classList.add("del");
 
-        inFocusRight.style.transform = "translateX(-100%)";
+        inFocusRight.style.transform = getInitialTranslation(direction);
         setTimeout(() => {
             nextImageR.style.transform = "translateX(0%)";
         }, 50);
 
         inFocusRight = nextImageR;
+    };
+
+    rightButton.addEventListener("click", () => {
+        removePastSlides();
+        animateCenter("next");
+        animateLeft("next");
+        animateRight("next");
     });
 
     leftButton.addEventListener("click", () => {
-        [...focusDiv.children].forEach((child) => {
-            if (child.classList.contains("del")) focusDiv.removeChild(child);
-        });
-
-        center = getCenterIndex(center, "previous");
-
-        const prevImage = getAdjacentImage(center, "previous");
-        focusDiv.appendChild(prevImage);
-
-        if (!inFocus) inFocus = focusImgM;
-        inFocus.classList.add("del");
-
-        inFocus.style.transform = "translateX(100%)";
-        setTimeout(() => {
-            prevImage.style.transform = "translateX(0%)";
-        }, 50);
-
-        inFocus = prevImage;
+        removePastSlides();
+        animateCenter("previous");
+        animateLeft("previous");
+        animateRight("previous");
     });
 
     parentContainer.appendChild(container);
