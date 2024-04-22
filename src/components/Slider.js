@@ -9,6 +9,12 @@ const IMAGE_URLS = [
 let center = 2;
 let inFocus;
 
+const left = 1;
+let inFocusLeft;
+
+const right = 3;
+let inFOcusRight;
+
 const getAdjacentImage = function getNext(index, direction) {
     const img = document.createElement("img");
     img.src = IMAGE_URLS[index];
@@ -17,6 +23,18 @@ const getAdjacentImage = function getNext(index, direction) {
     if (direction === "next") img.classList.add("translate-x-full");
     else if (direction === "previous") img.classList.add("-translate-x-full");
     return img;
+};
+
+const getCenterIndex = function getCenterSlideIndex(prevCenter, direction) {
+    let centerIndex;
+    if (direction === "next") {
+        centerIndex = prevCenter + 1;
+        centerIndex %= 5;
+    } else if (direction === "previous") {
+        centerIndex = prevCenter - 1;
+        if (centerIndex < 0) centerIndex = IMAGE_URLS.length - 1;
+    }
+    return centerIndex;
 };
 
 export default function Slider() {
@@ -29,6 +47,12 @@ export default function Slider() {
     const leftDiv = document.createElement("div");
     leftDiv.className =
         "absolute aspect-4/3 w-[50%] bg-amber-400 -translate-x-[120%] rounded-2xl";
+
+    // const focusImgL = document.createElement("img");
+    // focusImgL.src = IMAGE_URLS[1];
+    // focusImgL.className =
+    //     "absolute w-full h-full rounded-xl transition-transform ease-in-expo duration-1000";
+    // leftDiv.appendChild(focusImgL);
     container.appendChild(leftDiv);
 
     const focusDiv = document.createElement("div");
@@ -59,13 +83,12 @@ export default function Slider() {
         "absolute aspect-4/3 w-[50%] bg-amber-400 translate-x-[120%] rounded-2xl";
     container.appendChild(rightDiv);
 
-    leftButton.addEventListener("click", () => {
+    rightButton.addEventListener("click", () => {
         [...focusDiv.children].forEach((child) => {
             if (child.classList.contains("del")) focusDiv.removeChild(child);
         });
 
-        center += 1;
-        center %= 5;
+        center = getCenterIndex(center, "next");
 
         const nextImage = getAdjacentImage(center, "next");
         focusDiv.appendChild(nextImage);
@@ -81,13 +104,12 @@ export default function Slider() {
         inFocus = nextImage;
     });
 
-    rightButton.addEventListener("click", () => {
+    leftButton.addEventListener("click", () => {
         [...focusDiv.children].forEach((child) => {
             if (child.classList.contains("del")) focusDiv.removeChild(child);
         });
 
-        center -= 1;
-        if (center < 0) center = 4;
+        center = getCenterIndex(center, "previous");
 
         const prevImage = getAdjacentImage(center, "previous");
         focusDiv.appendChild(prevImage);
@@ -104,12 +126,6 @@ export default function Slider() {
     });
 
     parentContainer.appendChild(container);
-
-    const btnAnimate = document.createElement("button");
-    btnAnimate.className =
-        "mt-6 ml-12 px-4 py-1 font-medium border-none rounded-md bg-slate-700 text-white text-lg";
-    btnAnimate.textContent = "Slide";
-    parentContainer.appendChild(btnAnimate);
 
     return parentContainer;
 }
