@@ -40,7 +40,7 @@ const getCenterIndex = function getCenterSlideIndex(prevCenter, direction) {
     return centerIndex;
 };
 
-const NaVButton = function makeNavButton(index) {
+const NaVButton = function makeNavButton(index, leftNav, rightNav) {
     const btnNav = document.createElement("button");
     btnNav.className = "nav-dot w-3 h-3 bg-gray-400 rounded-full";
     if (index === 2) btnNav.classList.add("active");
@@ -58,6 +58,21 @@ const NaVButton = function makeNavButton(index) {
     function deactivate() {
         btnNav.classList.remove("active");
     }
+
+    btnNav.addEventListener("click", () => {
+        const diff = index - center;
+        const clickBtn = diff < 0 ? leftNav : rightNav;
+        let timesClicked = 0;
+
+        const intervalID = setInterval(() => {
+            clickBtn.click(); // Trigger the click event
+            timesClicked += 1; // Increment the click counter
+
+            if (timesClicked >= Math.abs(diff)) {
+                clearInterval(intervalID); // Stop the interval after N clicks
+            }
+        }, 100);
+    });
 
     return { ButtonElement, activate, deactivate };
 };
@@ -186,7 +201,6 @@ export default function Slider() {
         animateCenter("next");
         animateLeft("next");
         animateRight("next");
-        console.log(activeNav);
         activeNav.deactivate();
         navButtons[center].activate();
     });
@@ -196,7 +210,6 @@ export default function Slider() {
         animateCenter("previous");
         animateLeft("previous");
         animateRight("previous");
-        console.log(activeNav);
         activeNav.deactivate();
         navButtons[center].activate();
     });
@@ -207,7 +220,7 @@ export default function Slider() {
     navDots.classList =
         "flex gap-3 absolute left-1/2 -translate-x-1/2 bottom-[7%] bg-black bg-opacity-70 px-2 py-2 rounded-full";
     IMAGE_URLS.forEach((item, index) => {
-        const btnNav = NaVButton(index);
+        const btnNav = NaVButton(index, leftButton, rightButton);
         navDots.appendChild(btnNav.ButtonElement());
         navButtons.push(btnNav);
         if (index === 2) activeNav = btnNav;
