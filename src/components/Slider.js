@@ -9,11 +9,11 @@ const IMAGE_URLS = [
 let center = 2;
 let inFocus;
 
-const left = 1;
+let left = 1;
 let inFocusLeft;
 
-const right = 3;
-let inFOcusRight;
+let right = 3;
+let inFocusRight;
 
 const getAdjacentImage = function getNext(index, direction) {
     const img = document.createElement("img");
@@ -46,13 +46,13 @@ export default function Slider() {
 
     const leftDiv = document.createElement("div");
     leftDiv.className =
-        "absolute aspect-4/3 w-[50%] bg-amber-400 -translate-x-[120%] rounded-2xl";
+        "absolute aspect-4/3 w-[50%] -translate-x-[120%] rounded-2xl overflow-hidden";
 
-    // const focusImgL = document.createElement("img");
-    // focusImgL.src = IMAGE_URLS[1];
-    // focusImgL.className =
-    //     "absolute w-full h-full rounded-xl transition-transform ease-in-expo duration-1000";
-    // leftDiv.appendChild(focusImgL);
+    const focusImgL = document.createElement("img");
+    focusImgL.src = IMAGE_URLS[1];
+    focusImgL.className =
+        "absolute w-full h-full rounded-xl transition-transform ease-in-expo duration-1000";
+    leftDiv.appendChild(focusImgL);
     container.appendChild(leftDiv);
 
     const focusDiv = document.createElement("div");
@@ -80,18 +80,96 @@ export default function Slider() {
 
     const rightDiv = document.createElement("div");
     rightDiv.className =
-        "absolute aspect-4/3 w-[50%] bg-amber-400 translate-x-[120%] rounded-2xl";
+        "absolute aspect-4/3 w-[50%] translate-x-[120%] rounded-2xl overflow-hidden";
+    const focusImgR = document.createElement("img");
+    focusImgR.src = IMAGE_URLS[3];
+    focusImgR.className =
+        "absolute w-full h-full rounded-xl transition-transform ease-in-expo duration-1000";
+    rightDiv.appendChild(focusImgR);
     container.appendChild(rightDiv);
 
-    rightButton.addEventListener("click", () => {
+    const removePastSlides = function removePastChildFromStack() {
         [...focusDiv.children].forEach((child) => {
             if (child.classList.contains("del")) focusDiv.removeChild(child);
         });
 
+        [...leftDiv.children].forEach((child) => {
+            if (child.classList.contains("del")) leftDiv.removeChild(child);
+        });
+
+        [...rightDiv.children].forEach((child) => {
+            if (child.classList.contains("del")) rightDiv.removeChild(child);
+        });
+    };
+
+    // const getInitialTranslation = (direction) => {
+    //     const initialTranslation = direction === "next" ? "-100%" : "100%";
+    //     return `translateX(${initialTranslation})`;
+    // };
+
+    // const animateCenter = function animateCenterImage(direction) {
+    //     center = getCenterIndex(center, direction);
+    //     const nextImage = getAdjacentImage(center, direction);
+    //     focusDiv.appendChild(nextImage);
+
+    //     if (!inFocus) inFocus = focusImgM;
+    //     inFocus.classList.add("del");
+
+    //     inFocus.style.transform = getInitialTranslation(direction);
+    //     setTimeout(() => {
+    //         nextImage.style.transform = "translateX(0%)";
+    //     }, 50);
+
+    //     inFocus = nextImage;
+    // };
+
+    // const animateLeft = function animateLeftImage(direction) {
+    //     left = getCenterIndex(left, direction);
+    //     const nextImageL = getAdjacentImage(left, direction);
+    //     leftDiv.appendChild(nextImageL);
+
+    //     if (!inFocusLeft) inFocusLeft = focusImgL;
+    //     inFocusLeft.classList.add("del");
+
+    //     inFocusLeft.style.transform = getInitialTranslation(direction);
+    //     setTimeout(() => {
+    //         nextImageL.style.transform = "translateX(0%)";
+    //     }, 50);
+
+    //     inFocusLeft = nextImageL;
+    // };
+
+    // const animateRight = function animateRightImage(direction) {
+    //     right = getCenterIndex(right, direction);
+    //     const nextImageR = getAdjacentImage(right, direction);
+    //     rightDiv.appendChild(nextImageR);
+
+    //     if (!inFocusRight) inFocusRight = focusImgR;
+    //     inFocusRight.classList.add("del");
+
+    //     inFocusRight.style.transform = getInitialTranslation(direction);
+    //     setTimeout(() => {
+    //         nextImageR.style.transform = "translateX(0%)";
+    //     }, 50);
+
+    //     inFocusRight = nextImageR;
+    // };
+
+    rightButton.addEventListener("click", () => {
+        removePastSlides();
+
         center = getCenterIndex(center, "next");
+        left = getCenterIndex(left, "next");
+        right = getCenterIndex(right, "next");
 
         const nextImage = getAdjacentImage(center, "next");
         focusDiv.appendChild(nextImage);
+
+        const nextImageL = getAdjacentImage(left, "next");
+        leftDiv.appendChild(nextImageL);
+
+        const nextImageR = getAdjacentImage(right, "next");
+        rightDiv.appendChild(nextImageR);
 
         if (!inFocus) inFocus = focusImgM;
         inFocus.classList.add("del");
@@ -102,6 +180,26 @@ export default function Slider() {
         }, 50);
 
         inFocus = nextImage;
+
+        if (!inFocusLeft) inFocusLeft = focusImgL;
+        inFocusLeft.classList.add("del");
+
+        inFocusLeft.style.transform = "translateX(-100%)";
+        setTimeout(() => {
+            nextImageL.style.transform = "translateX(0%)";
+        }, 50);
+
+        inFocusLeft = nextImageL;
+
+        if (!inFocusRight) inFocusRight = focusImgR;
+        inFocusRight.classList.add("del");
+
+        inFocusRight.style.transform = "translateX(-100%)";
+        setTimeout(() => {
+            nextImageR.style.transform = "translateX(0%)";
+        }, 50);
+
+        inFocusRight = nextImageR;
     });
 
     leftButton.addEventListener("click", () => {
