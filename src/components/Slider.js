@@ -42,12 +42,11 @@ export default function Slider() {
 
     const container = document.createElement("div");
     container.className =
-        "container relative py-5 text-white mx-auto flex justify-center items-center gap-8 overflow-hidden";
+        "container fade-shadow relative py-5 text-white mx-auto flex justify-center items-center gap-8 overflow-hidden";
 
     const leftDiv = document.createElement("div");
     leftDiv.className =
-        "absolute aspect-4/3 w-[50%] -translate-x-[120%] rounded-2xl overflow-hidden";
-
+        "opacity-80 absolute aspect-4/3 w-[50%] -translate-x-[120%] overflow-hidden rounded-2xl";
     const focusImgL = document.createElement("img");
     focusImgL.src = IMAGE_URLS[1];
     focusImgL.className =
@@ -57,7 +56,7 @@ export default function Slider() {
 
     const focusDiv = document.createElement("div");
     focusDiv.className =
-        "relative aspect-4/3 w-[65%] rounded-2xl overflow-hidden";
+        "relative aspect-4/3 w-[65%] rounded-3xl overflow-hidden shadow-lg";
     const focusImgM = document.createElement("img");
     focusImgM.src = IMAGE_URLS[2];
     focusImgM.className =
@@ -80,7 +79,7 @@ export default function Slider() {
 
     const rightDiv = document.createElement("div");
     rightDiv.className =
-        "absolute aspect-4/3 w-[50%] translate-x-[120%] rounded-2xl overflow-hidden";
+        "opacity-80 absolute aspect-4/3 w-[50%] translate-x-[120%] rounded-2xl overflow-hidden";
     const focusImgR = document.createElement("img");
     focusImgR.src = IMAGE_URLS[3];
     focusImgR.className =
